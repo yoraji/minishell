@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/19 18:48:19 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/22 06:29:50 by yoraji           ###   ########.fr       */
+/*   Created: 2025/04/22 05:31:46 by yoraji            #+#    #+#             */
+/*   Updated: 2025/04/22 06:35:48 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/minishell.h"  
 
-int    ft_strlen(const char *s)
+int ft_isspace(int c)
 {
-    int i;
-
-    i = 0;
-    while (s[i])
-        i++;
-    return (i);
+    return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v');
 }

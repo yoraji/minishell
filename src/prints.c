@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   prints.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/19 18:48:19 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/22 06:29:50 by yoraji           ###   ########.fr       */
+/*   Created: 2025/04/22 05:29:49 by yoraji            #+#    #+#             */
+/*   Updated: 2025/04/22 05:29:54 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int    ft_strlen(const char *s)
+void    print_tokens(char **tokens)
 {
-    int i;
-
-    i = 0;
-    while (s[i])
+    int i = 0;
+    while (tokens[i])
+    {
+        printf("Token: [%s]\n", tokens[i]);
         i++;
-    return (i);
+    }
 }
