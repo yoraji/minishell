@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:24:27 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/23 01:31:41 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/24 00:52:41 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,6 +313,9 @@ int ft_scan(char **tab)
     return 0; // Return 1 if odd, indicating an error
 }
 
+//  3. Quote Removal
+//  4. Environment Variable Expansion
+//  5. handling the herdoc "<<"
 int handling_input(char *argv, t_data *data)
 {
     int i = 0;
@@ -322,11 +325,19 @@ int handling_input(char *argv, t_data *data)
         return (1);
     }
     char **tab = tokens(argv);
+    i=0;
+    while (tab[i])
+    {
+        printf("before tokens %s\n", tab[i]);
+        i++;
+    }
     if (tab == NULL) // protection against memory allocation failure
     {
         perror("Memory allocation failed"); // ??
         return (1);
     }
+    if (is_expand_env(tab) == 1)
+        // tab = expand_env(tab);
     if (ft_scan(tab) == 1)
     {
         tab = scan_token(tab); // protections ??
@@ -335,6 +346,7 @@ int handling_input(char *argv, t_data *data)
             perror("Memory allocation failed");
             return (1);
         }
+        
     }
     print_tokens(tab);
     detect_sepical_token(tab, data);
