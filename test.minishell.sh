@@ -247,6 +247,5 @@ Cases_tests (echo):
         # ls | > file
         # ls > > file | grep a
         # ls | ; > file
-
         
 */

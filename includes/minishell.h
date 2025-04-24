@@ -55,21 +55,23 @@ int     ft_isspace(int c);
 
 /* signal handling */
 void setup_signals(void);
-void sigint_handler(int signum);
-void sigquit_handler(int signum);
+// void sigint_handler(int signum);
+// void sigquit_handler(int signum);
 void sig_handler(int signum);
 
 /* build-in function */
 int builtin_cd(char **args);
 int builtin_echo(char **args);
 int builtin_pwd(void);
-int builtin_env(char **envp);
-int builtin_export(char **args, char **envp);
-int builtin_unset(char **args, char **envp);
-int builtin_exit(char **args);
-int is_builtin(char *cmd);
+// int builtin_env(char **envp);
+// int builtin_export(char **args, char **envp);
+// int builtin_unset(char **args, char **envp);
+// int builtin_exit(char **args);
+// int is_builtin(char *cmd);
 int detect_cmd(char **tab);
 
+/* enviroment */
+int is_expand_env(char **input);
 
 /* parsing_engine */
 int     unclosed_quotes(char **tab);
@@ -88,16 +90,15 @@ void   free_data(t_data *data);
 void free_tab(char **tab);
 
 /* execution */
+int is_expand_env(char **input);
 
 /* syntax error */
 int detect_cmd_v1(char **tab);
 int invalid_pipe_position(char **tab);
 int syntax_error(t_data *data);
 
-
 /* print token */
 void    print_tokens(char **tokens);
-
 
 
 // Unclosed parentheses : (, ), {, }, [, ]
