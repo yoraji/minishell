@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:24:27 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 05:07:21 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/24 08:12:28 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int unclosed_quotes(char **tab)
 //     return result;
 // }
 
-// sugesstion
+
 char *extract_token(char *input, int *i)
 {
     char *result = calloc(1, sizeof(char));
@@ -137,7 +137,7 @@ char *extract_token(char *input, int *i)
             (*i)++;
             while (input[*i] && input[*i] != quote)
             {
-                if (input[*i] == '\\' && input[*i + 1] == quote) // Handle escaped quotes
+                if (input[*i] == quote) // Handle escaped quotes
                     (*i)++;
                 char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
                 free(result);
@@ -154,17 +154,17 @@ char *extract_token(char *input, int *i)
             }
         }
         // Handle escape characters
-        else if (input[*i] == '\\')
-        {
-            (*i)++;
-            if (input[*i]) // Ensure there is a character after the backslash
-            {
-                char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
-                free(result);
-                result = tmp;
-                (*i)++;
-            }
-        }
+        // else if (input[*i] == '\\')
+        // {
+        //     (*i)++;
+        //     if (input[*i]) // Ensure there is a character after the backslash
+        //     {
+        //         char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+        //         free(result);
+        //         result = tmp;
+        //         (*i)++;
+        //     }
+        // }
         else
         {
             // Handle regular characters
@@ -335,6 +335,8 @@ int handling_input(char *argv, t_data *data)
         perror("Memory allocation failed"); // ??
         return (1);
     }
+    print_tokens(tab);
+    printf("after tokens\n");
     if (is_expand_env(tab) == 1)
         tab = expand_env(tab, data->envp);
     if (ft_scan(tab) == 1)
@@ -347,6 +349,7 @@ int handling_input(char *argv, t_data *data)
         }
 
     }
+    printf("after scan_token\n");
     print_tokens(tab);
     detect_sepical_token(tab, data);
     // here add the functions to check the token

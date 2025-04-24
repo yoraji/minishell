@@ -14,7 +14,7 @@ Cases_tests (echo):
     / Token: [whats]
     / Token: [up""'"]
     Error: Unmatched " quote in token: "'hello'
-    
+
     echo "hello"
 
     echo "hello world
@@ -92,7 +92,7 @@ Cases_tests (echo):
     cat < input.txt > output1.txt >> output2.txt
 
     echo "hello 'world'" && cat < input.txt | grep "foo" > output.txt || echo "done"
-    
+
     minishell> echo "hello 'world'" && cat < input.txt | grep "foo" > output.txt || echo "done"
     Token: [echo]
     Token: ["hello]
@@ -172,7 +172,7 @@ Cases_tests (echo):
 
 
     echo "he said: 'it'\''s fine'"
-    
+
     minishell> echo "he said: 'it'\''s fine'"
     Token: [echo]
     Token: [he said: 'it'\''s fine']
@@ -185,7 +185,7 @@ Cases_tests (echo):
     #   Token: ['She said, "hello"']
 
     // !!!!!!!!! ???
-    echo '"' 
+    echo '"'
 
     minishell> echo '"'
     Token: [echo]
@@ -215,37 +215,49 @@ Cases_tests (echo):
         # Token: [not found]
 
     echo "a"'b'
-        # minishell> echo "a"'b'
-        # Token: [echo]
-        # Token: [ab]
-    
+        minishell> echo "a"'b'
+        Token: [echo]
+        Token: [ab]
+
     echo "hello 'nested "quotes"'"
 
-        # minishell> echo "hello 'nested "quotes"'"
-        # Token: [echo]
-        # Token: [hello 'nested quotes']
+        minishell> echo "hello 'nested "quotes"'"
+        Token: [echo]
+        Token: [hello 'nested quotes']
 
-        # > 
-        # < 
-        # >> 
-        # <<
-        # ls > 
-        # cat < 
-        # ls >> | grep foo // !!!
-        # echo a > > file
-        # cat <<<< EOF
-        # ls < > file
+        >
+        <
+        >>
+        <<
+        ls >
+        cat <
+        ls >> | grep foo // !!!
+        echo a > > file
+        cat <<<< EOF
+        ls < > file
 
-        # < | > |
-        # ls | < | echo
-        # echo hello > | > file
-        # | | |
-        # echo hello > file <
-        # echo hello > file < | echo
+        < | > |
+        ls | < | echo
+        echo hello > | > file
+        | | |
+        echo hello > file <
+        echo hello > file < | echo
 
-        # ls > file | 
-        # ls | > file
-        # ls > > file | grep a
-        # ls | ; > file
-        
+        ls > file |
+        ls | > file
+        ls > > file | grep a
+        ls | ; > file
+
+        echo $
+        echo $USER$HOME$SHELL
+        echo "Path: $PATH is set"
+        echo "Your home directory is $HOME"
+        echo $SHELL_PATH
+        echo \$USER
+        echo Hello $USER, welcome to $HOME!
+        echo $UNDEFINED_VAR
+        echo $USER is logged into $HOME
+        echo $USER
+        echo $USER$HOME
+
 */

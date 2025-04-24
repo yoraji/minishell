@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 04:55:50 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 05:08:35 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/24 08:13:54 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int is_expand_env(char **input)
         j = 0;
         while(input[i][j])
         {
+            if(input[i][j] == '\\' && input[i][j+1] == '$')
+                return (0);
             if (input[i][j] == '$')
                 return (1);
             j++;
@@ -43,7 +45,7 @@ int is_expand_env(char **input)
     return(0);
 }
 
-//
+// Handling the '\\'
 char **expand_env(char **input, char **envp)
 {
     int i = 0;
@@ -56,21 +58,27 @@ char **expand_env(char **input, char **envp)
     {
         char *token = input[i];
         char *new_token = calloc(1, sizeof(char)); // Allocate memory for the expanded token
-        if (!new_token)
-        {
+        if (!new_token) {
             free_tab(expanded);
+            perror("Memory allocation failed");
             return NULL;
         }
-
         int j = 0;
         while (token[j])
         {
+            // if (token[j] == '\\' && token[j + 1] == '$')
+            // {
+            //     char *tmp = ft_strjoin(new_token, "$");
+            //     free(new_token);
+            //     new_token = tmp;
+            //     j += 2; // Skip the backslash and the $
+            // }
             if (token[j] == '$' && token[j + 1] && token[j + 1] != ' ')
             {
-                j++; // Skip the '$'
+                j++;
                 int start = j;
                 while (token[j] && (isalnum(token[j]) || token[j] == '_'))
-                    j++; // Read the variable name
+                    j++;
 
                 char *var_name = strndup(&token[start], j - start);
                 if (!var_name)
@@ -79,8 +87,7 @@ char **expand_env(char **input, char **envp)
                     free_tab(expanded);
                     return NULL;
                 }
-
-                char *var_value = getenv(var_name); // Get the value of the environment variable
+                char *var_value = getenv(var_name);
                 free(var_name);
 
                 if (var_value)
@@ -104,7 +111,6 @@ char **expand_env(char **input, char **envp)
     }
 
     expanded[expanded_index] = NULL;
-
     free_tab(input); // Free the original input tokens
     return expanded;
 }
