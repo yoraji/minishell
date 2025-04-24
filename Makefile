@@ -11,6 +11,7 @@ SRC = 	./src/minishell.c \
 		./src/build_in.c \
 		./src/parsing_engine.c \
 		./src/free.c \
+		./src/env.c \
 		./src/prints.c \
 		./src/syntax_error.c \
 		./utils/ft_split.c \

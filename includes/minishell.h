@@ -91,7 +91,7 @@ void free_tab(char **tab);
 
 /* execution */
 int is_expand_env(char **input);
-
+char **expand_env(char **input, char **envp);
 /* syntax error */
 int detect_cmd_v1(char **tab);
 int invalid_pipe_position(char **tab);

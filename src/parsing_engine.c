@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:24:27 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 00:52:41 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/24 05:07:21 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int unclosed_quotes(char **tab)
 //         if (input[*i] == '\'' || input[*i] == '"')
 //         {
 //             quote = input[(*i)];
-//             (*i)++; // ?? 
+//             (*i)++; // ??
 //             int qstart = *i;
 //             while (input[*i] && input[*i] != quote) // Skip until closing quote
 //                 (*i)++;
@@ -287,7 +287,7 @@ void detect_sepical_token(char **tab, t_data *data)
         else if (strcmp(tab[i], ">>") == 0)
             data->double_redir_count_right++;
         else if (strcmp(tab[i], "<<") == 0)
-            data->double_redir_count_left++;    
+            data->double_redir_count_left++;
         i++;
     }
 }
@@ -325,19 +325,18 @@ int handling_input(char *argv, t_data *data)
         return (1);
     }
     char **tab = tokens(argv);
-    i=0;
-    while (tab[i])
-    {
-        printf("before tokens %s\n", tab[i]);
-        i++;
-    }
+    // while (tab[i])
+    // {
+    //     printf("before tokens %s\n", tab[i]);
+    //     i++;
+    // }
     if (tab == NULL) // protection against memory allocation failure
     {
         perror("Memory allocation failed"); // ??
         return (1);
     }
     if (is_expand_env(tab) == 1)
-        // tab = expand_env(tab);
+        tab = expand_env(tab, data->envp);
     if (ft_scan(tab) == 1)
     {
         tab = scan_token(tab); // protections ??
@@ -346,7 +345,7 @@ int handling_input(char *argv, t_data *data)
             perror("Memory allocation failed");
             return (1);
         }
-        
+
     }
     print_tokens(tab);
     detect_sepical_token(tab, data);
@@ -388,7 +387,7 @@ char **scan_token(char **tab)
                 if ((tab[i][j] == '<' || tab[i][j] == '>') && tab[i][j + 1] == tab[i][j])
                     len = 2;
 
-                char *special = strndup(&tab[i][j], len); // ?? 
+                char *special = strndup(&tab[i][j], len); // ??
                 new_tab[new_tab_index++] = special;
                 j += len;
             }

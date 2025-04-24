@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 04:55:50 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 03:04:53 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/24 05:08:35 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
     $VAR where VAR isn’t defined → empty string.
     '$VAR' → should NOT expand (single quotes prevent expansion).
     "${VAR}" → optional support for braces.
-    
+
 */
 int is_expand_env(char **input)
 {
@@ -40,15 +40,71 @@ int is_expand_env(char **input)
         }
         i++;
     }
-    return(0); 
+    return(0);
 }
 
-//this functrion should replace the $input and slpit as a token
-char **expand_env(char **input)
+//
+char **expand_env(char **input, char **envp)
 {
-    char  *new_input;
+    int i = 0;
+    char **expanded = malloc(sizeof(char *) * 256); // Allocate memory for the expanded tokens
+    if (!expanded)
+        return NULL;
 
-    
-    free (input);
-    return new_input
+    int expanded_index = 0;
+    while (input[i])
+    {
+        char *token = input[i];
+        char *new_token = calloc(1, sizeof(char)); // Allocate memory for the expanded token
+        if (!new_token)
+        {
+            free_tab(expanded);
+            return NULL;
+        }
+
+        int j = 0;
+        while (token[j])
+        {
+            if (token[j] == '$' && token[j + 1] && token[j + 1] != ' ')
+            {
+                j++; // Skip the '$'
+                int start = j;
+                while (token[j] && (isalnum(token[j]) || token[j] == '_'))
+                    j++; // Read the variable name
+
+                char *var_name = strndup(&token[start], j - start);
+                if (!var_name)
+                {
+                    free(new_token);
+                    free_tab(expanded);
+                    return NULL;
+                }
+
+                char *var_value = getenv(var_name); // Get the value of the environment variable
+                free(var_name);
+
+                if (var_value)
+                {
+                    char *tmp = ft_strjoin(new_token, var_value);
+                    free(new_token);
+                    new_token = tmp;
+                }
+            }
+            else
+            {
+                char *tmp = ft_strjoin(new_token, (char[]){token[j], '\0'});
+                free(new_token);
+                new_token = tmp;
+                j++;
+            }
+        }
+
+        expanded[expanded_index++] = new_token;
+        i++;
+    }
+
+    expanded[expanded_index] = NULL;
+
+    free_tab(input); // Free the original input tokens
+    return expanded;
 }
