@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 04:55:50 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 09:43:02 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/28 06:32:30 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
     "${VAR}" → optional support for braces.
 
 */
+
 int is_expand_env(char **input)
 {
     int i = 0;

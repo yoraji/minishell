@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:42:15 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/27 06:39:28 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/28 06:48:07 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int main(int argc, char **argv, char **envp)
         //     continue; // Skip to the next iteration
         // }
 
-        // ASTNode *root = build_node(data.tab); // Build the node structure
-        // print_ast(root, 0); // Print the AST
+        ASTNode *root = build_node(data.tab); // Build the node structure
+        print_ast(root, 0); // Print the AST
         // Syntax Validation of the tree
         // if (flag == 1 && is_builtin(data.tab[0]) == 1)
             // execute_builtin(&data); // Handle built-in commands

@@ -1,16 +1,126 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Constrating_AST.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 23:41:09 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/28 06:48:46 by yoraji           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-#include "../includes/minishell.h"
+
+typedef  enum {
+    NODE_COMMAND,
+    NODE_PIPE,
+    NODE_REDIRECTION,
+    NODE_ARGUMENT,
+    NODE_ENV_VAR
+} NodeType;
+
+typedef struct ASTNode
+{
+    NodeType type;
+    char **args; // Arguments for the command
+    char *filename; // Filename for redirection
+    struct ASTNode *left; // Left child
+    struct ASTNode *right; // Right child
+} ASTNode;
+
+static char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
+
+static int	ft_count_word(char const *s, char c)
+{
+	int	count;
+	int	in_word;
+
+	count = 0;
+	in_word = 0;
+	while (*s)
+	{
+		if (*s != c && !in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		else if (*s == c)
+			in_word = 0;
+		s++;
+	}
+	return (count);
+}
+
+static void	*free_all(char **arr, int i)
+{
+	while (i-- > 0)
+		free(arr[i]);
+	free(arr);
+	return (NULL);
+}
+
+static char	*ft_allocate_word(const char **s, char c)
+{
+	const char	*start = *s;
+	int			len;
+	char		*word;
+
+	while (**s && **s != c)
+		(*s)++;
+	len = *s - start;
+	word = (char *)malloc((len + 1) * sizeof(char));
+	if (!word)
+		return (NULL);
+	ft_strncpy(word, start, len);
+	word[len] = '\0';
+	return (word);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**ptr;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	ptr = calloc((ft_count_word(s, c) + 1), sizeof(char *));
+	if (!ptr)
+		return (NULL);
+	i = 0;
+	while (*s)
+	{
+		while (*s == c)
+			s++;
+		if (*s)
+		{
+			ptr[i] = ft_allocate_word(&s, c);
+			if (!ptr[i])
+				return (free_all(ptr, i));
+			i++;
+		}
+	}
+	return (ptr);
+}
+
+
+int is_redirection(char *tokens)
+{
+    return ( strcmp(tokens, ">") == 0 ||
+             strcmp(tokens, ">>") == 0 ||
+             strcmp(tokens, "<") == 0 ||
+             strcmp(tokens, "<<") == 0 );
+}
+
+// ---------------------------------------
 
 ASTNode *create_node(NodeType type, char **args, char *filename)
 {
@@ -26,25 +136,6 @@ ASTNode *create_node(NodeType type, char **args, char *filename)
     node->left = NULL;
     node->right = NULL;
     return node;
-}
-
-/*
-    Example AST Structure:
-        echo hello | grep hello > output.txt
-            PIPE
-            /    \
-         ls -l   COMMAND
-                  (grep)
-                    |
-          grep ".c" > output.txt
-*/
-
-int is_redirection(char *tokens)
-{
-    return ( ft_strcmp(tokens, ">") == 0 ||
-             ft_strcmp(tokens, ">>") == 0 ||
-             ft_strcmp(tokens, "<") == 0 ||
-             ft_strcmp(tokens, "<<") == 0 );
 }
 
 ASTNode *build_node(char **tokens)
@@ -134,10 +225,12 @@ ASTNode *build_node(char **tokens)
             current = cmd_node;
         }
     }
+
     return root;
 }
 
-void print_ast(ASTNode *node, int depth)
+
+void printf_AST(ASTNode *node, int depth)
 {
     if (!node)
         return;
@@ -162,6 +255,19 @@ void print_ast(ASTNode *node, int depth)
         printf("UNKNOWN NODE TYPE\n");
 
     // Recursively print children
-    print_ast(node->left, depth + 1);
-    print_ast(node->right, depth + 1);
+    printf_AST(node->left, depth + 1);
+    printf_AST(node->right, depth + 1);
+}
+
+
+int main()
+{
+    char *input = "cat < input.txt | grep foo > output.txt";
+    char **tokens = ft_split(input, ' '); // Tokenize the input
+    ASTNode *root = build_node(tokens); // Build the AST
+
+    printf_AST(root, 0); // Print the AST
+
+    // Free allocated memory (not shown here)
+    return 0;
 }
