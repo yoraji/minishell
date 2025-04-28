@@ -10,10 +10,12 @@ SRC = 	./src/minishell.c \
 		./src/signals.c \
 		./src/build_in.c \
 		./src/parsing_engine.c \
+		./src/Constrating_AST.c \
 		./src/free.c \
 		./src/env.c \
 		./src/prints.c \
 		./src/syntax_error.c \
+		./utils/ft_strcmp.c \
 		./utils/ft_split.c \
 		./utils/ft_strjoin.c \
 		./utils/ft_atoi.c \

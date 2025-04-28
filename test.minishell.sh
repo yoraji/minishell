@@ -6,7 +6,69 @@
 
 Cases_tests (echo):
 /*
-    minishell> echo "'hello'  welcome whats up""'"
+    echo "'hello'  welcome whats up""'"
+    echo "hello"
+    echo "hello world
+    echo 'hello\'world' syntax_error
+    echo "'hello \"world\"'"
+    echo "hello 'world\'s best' shell"
+    echo "She said, \"hello\""
+    echo "hello\\world"
+    echo 'it'\''s fine'
+    echo "hello 'world\'s best' shell"
+    cat < input.txt | grep "foo bar" > output.txt
+    echo "hello ''world "this is quotes inside quotes"' " " "and even more quotes 'inside more quotes' " "
+    echo quotes"' " " "and
+    ls -la |grep ".c"
+    echo "hello
+    echo hello\|world > file\ name
+    echo "hello;world" && echo "foo&bar" || echo "baz|qux"
+    echo "" '' " " ' '
+    echo hello\\
+    echo \"hello\"
+    echo "hi" ">" "file.txt"
+    echo "'\"nested\" quotes'"
+    echo "She said, \"hello\""
+    echo hello\\world
+    echo '"'
+    echo "hello; world" | grep "hello" && echo "found" || echo "not found"
+    echo "a"'b'
+    echo "hello 'nested "quotes"'"
+    >
+    <
+    >>
+    <<
+    ls >
+    cat <
+    ls >> | grep foo // !!!
+    echo a > > file
+    cat <<<< EOF
+    ls < > file
+    < | > |
+    ls | < | echo
+    echo hello > | > file
+    | | |
+    echo hello > file <
+    echo hello > file < | echo
+    ls > file |
+    ls | > file
+    ls > > file | grep a
+    ls | ; > file
+    echo $
+    echo $USER$HOME$SHELL
+    echo "Path: $PATH is set"
+    echo "Your home directory is $HOME"
+    echo $SHELL_PATH
+    echo \$USER
+    echo Hello $USER, welcome to $HOME!
+    echo $UNDEFINED_VAR
+    echo $USER is logged into $HOME
+    echo $USER
+    echo $USER$HOME
+    echo "hello 'nested "quotes"'"
+    ls "-la|grep" ".c"
+    ls -la|grep ".c"
+
 
     Token: [echo]
     Token: ["'hello']
@@ -14,10 +76,8 @@ Cases_tests (echo):
     / Token: [whats]
     / Token: [up""'"]
     Error: Unmatched " quote in token: "'hello'
-
     echo "hello"
 
-    echo "hello world
     minishell> echo "hello
     Error: Unmatched " quote in token: hello
     Memory allocation failed: Success
@@ -26,7 +86,7 @@ Cases_tests (echo):
     Token: [echo]
     Token: ["hello"]
 
-    echo "'hello \"world\"'"
+
 
     minishell> echo "'hello \"world\"'"
     Token: [echo]
@@ -56,8 +116,16 @@ Cases_tests (echo):
     Token: ["hello]
     Token: ['world's]
     Token: [best']
-    Token: [shell"]
+    Token: ["shell"]
     Error: Unmatched " quote in token: "hello
+
+    minishell> ls -la |grep ".c"
+    Token: [ls]
+    Token: [-la]
+    Token: [|grep]
+    Token: [.c]
+    Valid Syntax
+    minishell>
 
 
     cat < input.txt | grep "foo bar" > output.txt
@@ -173,6 +241,7 @@ Cases_tests (echo):
 
     echo "he said: 'it'\''s fine'"
 
+
     minishell> echo "he said: 'it'\''s fine'"
     Token: [echo]
     Token: [he said: 'it'\''s fine']
@@ -215,6 +284,7 @@ Cases_tests (echo):
         # Token: [not found]
 
     echo "a"'b'
+
         minishell> echo "a"'b'
         Token: [echo]
         Token: [ab]
@@ -259,5 +329,17 @@ Cases_tests (echo):
         echo $USER is logged into $HOME
         echo $USER
         echo $USER$HOME
+
+        # minishell> echo "a"'b'
+        # Token: [echo]
+        # Token: [ab]
+
+    echo "hello 'nested "quotes"'"
+
+        # minishell> echo "hello 'nested "quotes"'"
+        # Token: [echo]
+        # Token: [hello 'nested quotes']
+
+	# Segmentation fault (core dumped) in this case ?? ehco hello nested quotes
 
 */

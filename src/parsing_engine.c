@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 05:24:27 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 08:12:28 by yoraji           ###   ########.fr       */
+/*   Created: 2025/04/24 09:10:28 by yoraji            #+#    #+#             */
+/*   Updated: 2025/04/27 06:45:25 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
@@ -45,6 +46,7 @@ int unclosed_quotes(char **tab)
     }
     return 0;
 }
+
 // OLD VERSION THAT HAVE PROBLEM IN SPACES
 // char *extract_token(char *input, int *i)
 // {
@@ -62,6 +64,7 @@ int unclosed_quotes(char **tab)
 //         if (input[*i] == '\'' || input[*i] == '"')
 //         {
 //             quote = input[(*i)];
+//             (*i)++; // ??
 //             (*i)++; // ??
 //             int qstart = *i;
 //             while (input[*i] && input[*i] != quote) // Skip until closing quote
@@ -117,6 +120,7 @@ int unclosed_quotes(char **tab)
 // }
 
 
+// sugestion
 char *extract_token(char *input, int *i)
 {
     char *result = calloc(1, sizeof(char));
@@ -134,18 +138,26 @@ char *extract_token(char *input, int *i)
         if (input[*i] == '\'' || input[*i] == '"')
         {
             quote = input[*i];
+            char *tmp = ft_strjoin(result, (char[]){quote, '\0'}); // Include the opening quote
+            free(result);
+            result = tmp;
             (*i)++;
             while (input[*i] && input[*i] != quote)
             {
-                if (input[*i] == quote) // Handle escaped quotes
+                if (input[*i] == '\\') // Handle escaped quotes
                     (*i)++;
-                char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+                tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
                 free(result);
                 result = tmp;
                 (*i)++;
             }
             if (input[*i] == quote)
+            {
+                tmp = ft_strjoin(result, (char[]){quote, '\0'});
+                free(result);
+                result = tmp;
                 (*i)++;
+            }
             else
             {
                 printf("Error: Unmatched %c quote in token: %s\n", quote, result);
@@ -154,20 +166,29 @@ char *extract_token(char *input, int *i)
             }
         }
         // Handle escape characters
-        // else if (input[*i] == '\\')
-        // {
-        //     (*i)++;
-        //     if (input[*i]) // Ensure there is a character after the backslash
-        //     {
-        //         char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
-        //         free(result);
-        //         result = tmp;
-        //         (*i)++;
-        //     }
-        // }
+        else if (input[*i] == '\\')
+        {
+            (*i)++;
+            if (input[*i]) // Ensure there is a character after the backslash
+            {
+                char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+                free(result);
+                result = tmp;
+                (*i)++;
+            }
+        }
+        else if (input[*i] == '|' || input[*i] == '<' || input[*i] == '>')
+        {
+
+            char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+            free(result);
+            result = tmp;
+            (*i)++;
+            return result;
+        }
         else
         {
-            // Handle regular characters
+            // Handle other characters
             char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
             free(result);
             result = tmp;
@@ -176,6 +197,7 @@ char *extract_token(char *input, int *i)
     }
     return result;
 }
+
 
 char **tokens(char *input)
 {
@@ -228,7 +250,7 @@ int brain(char **tab)
     while (tab[i])
     {
         // Skip logical operators
-        if (strcmp(tab[i], "&&") == 0 || strcmp(tab[i], "||") == 0)
+        if (ft_strcmp(tab[i], "&&") == 0 || ft_strcmp(tab[i], "||") == 0)
         {
             i++;
             // Ensure the next token is a valid command
@@ -239,36 +261,21 @@ int brain(char **tab)
             }
             continue;
         }
-
         // Skip arguments (not commands)
-        if (i > 0 && strcmp(tab[i - 1], "&&") != 0 && strcmp(tab[i - 1], "||") != 0)
+        if (i > 0 && ft_strcmp(tab[i - 1], "&&") != 0 && ft_strcmp(tab[i - 1], "||") != 0)
         {
             i++;
             continue;
         }
         // Check if the token is a valid command
-        if (detect_cmd_v1(&tab[i]) == 0)
-        {
-            printf("Error: Command not found: %s\n", tab[i]);
-            return (1);
-        }
+        // if (detect_cmd_v1(&tab[i]) == 0)
+        // {
+        //     printf("Error: Command not found: %s\n", tab[i]);
+        //     return (1);
+        // }
         i++;
     }
     return (0);
-}
-
-int count_quotes(char *argv)
-{
-    int i = 0;
-    int count = 0;
-
-    while (argv[i])
-    {
-        if (argv[i] == '\'' || argv[i] == '"')
-            count++;
-        i++;
-    }
-    return count;
 }
 
 void detect_sepical_token(char **tab, t_data *data)
@@ -278,15 +285,15 @@ void detect_sepical_token(char **tab, t_data *data)
     int i = 0;
     while (tab[i])
     {
-        if (strcmp(tab[i], "|") == 0)
+        if (ft_strcmp(tab[i], "|") == 0) // ??
             data->pipe_count++;
-        else if (strcmp(tab[i], ">") == 0)
+        else if (ft_strcmp(tab[i], ">") == 0)
             data->redir_count_right++;
-        else if (strcmp(tab[i], "<") == 0)
+        else if (ft_strcmp(tab[i], "<") == 0)
             data->redir_count_left++;
-        else if (strcmp(tab[i], ">>") == 0)
+        else if (ft_strcmp(tab[i], ">>") == 0)
             data->double_redir_count_right++;
-        else if (strcmp(tab[i], "<<") == 0)
+        else if (ft_strcmp(tab[i], "<<") == 0)
             data->double_redir_count_left++;
         i++;
     }
@@ -296,26 +303,48 @@ int ft_scan(char **tab)
 {
     int i = 0;
     int j = 0;
-    int count = 0;
 
     while (tab[i])
     {
         j = 0;
+        char quote = 0;
+
+        // Handle tokens with quotes
         while (tab[i][j])
         {
-            // ??
-            if (isalnum(tab[i][j + 1]) && isalnum(tab[i][j - 1]) && (tab[i][j] == '|' || tab[i][j] == '<' || tab[i][j] == '>'))
-                return 1;
+            if (tab[i][j] == '\'' || tab[i][j] == '"')
+            {
+                if (quote == 0) // Start of a quoted section
+                    quote = tab[i][j];
+                else if (quote == tab[i][j]) // End of the quoted section
+                    quote = 0;
+            }
+            else if (quote == 0 && (tab[i][j] == '|' || tab[i][j] == '<' || tab[i][j] == '>'))
+            {
+                // Check if special characters are improperly placed
+                if (isalnum(tab[i][j + 1]) && isalnum(tab[i][j - 1]))
+                    return 1;
+            }
             j++;
         }
+
+        // If the token ends with an unclosed quote, return an error
+        if (quote != 0)
+        {
+            printf("Error: Unmatched %c quote in token: %s\n", quote, tab[i]);
+            return 1;
+        }
+
         i++;
     }
-    return 0; // Return 1 if odd, indicating an error
+    return 0; // Return 0 if no errors are found
 }
+
 
 //  3. Quote Removal
 //  4. Environment Variable Expansion
 //  5. handling the herdoc "<<"
+
 int handling_input(char *argv, t_data *data)
 {
     int i = 0;
@@ -325,44 +354,53 @@ int handling_input(char *argv, t_data *data)
         return (1);
     }
     char **tab = tokens(argv);
-    // while (tab[i])
-    // {
-    //     printf("before tokens %s\n", tab[i]);
-    //     i++;
-    // }
     if (tab == NULL) // protection against memory allocation failure
     {
         perror("Memory allocation failed"); // ??
         return (1);
     }
-    print_tokens(tab);
-    printf("after tokens\n");
-    if (is_expand_env(tab) == 1)
-        tab = expand_env(tab, data->envp);
-    if (ft_scan(tab) == 1)
-    {
-        tab = scan_token(tab); // protections ??
-        if (tab == NULL) // protection against memory allocation failure
-        {
-            perror("Memory allocation failed");
-            return (1);
-        }
+    // print_tokens(tab);
+    // // printf("after tokens\n");
+    // return 0;
+    // if (is_expand_env(tab) == 1)
+    //     tab = expand_env(tab, data->envp);
+    // if (ft_scan(tab) == 1)
+    // {
+    //     tab = scan_token(tab); // protections ??
+    //     if (tab == NULL) // protection against memory allocation failure
+    //     {
+    //         perror("Memory allocation failed");
+    //         return (1);
+    //     }
 
-    }
-    printf("after scan_token\n");
-    print_tokens(tab);
+    //  }
+     // printf("after tokens\n");
+    // return 0;
+    // printf("after scan_token\n");
+    // print_tokens(tab);
     detect_sepical_token(tab, data);
     // here add the functions to check the token
-    if (unclosed_quotes(tab) || brain(tab))
-    {
-        free_tab(tab); // Use free_tab to free memory
-        return (1);
-    }
+    // if (unclosed_quotes(tab) || brain(tab))
+    // {
+    //     free_tab(tab); // Use free_tab to free memory
+    //     return (1);
+    // }
     // Future: check redirections, build cmd structs here...
-    data->tab = tab;
+    // free_tab(tab); // Free the tokenized array
+
+    // Future: check redirections, build cmd structs here...
+
+    while (tab[i])
+    {
+        printf("Token: [%s]\n", tab[i]);
+        i++;
+    }
+
+    data->tab = tab; // Store the tokenized array in data
     // free_tab(tab); // Free the tokenized array
     return (0);
 }
+
 
 char **scan_token(char **tab)
 {
@@ -382,7 +420,6 @@ char **scan_token(char **tab)
                 j++;
                 continue;
             }
-
             // Handle special characters: |, <, >, <<, >>
             if (tab[i][j] == '|' || tab[i][j] == '<' || tab[i][j] == '>')
             {
@@ -414,4 +451,5 @@ char **scan_token(char **tab)
     }
     new_tab[new_tab_index] = NULL;
     return new_tab;
+
 }

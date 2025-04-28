@@ -6,26 +6,29 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:21:09 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/23 02:52:06 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/27 06:39:56 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../includes/minishell.h"
 
-int detect_cmd_v1(char **tab)
+
+int check_sepicail_operators(char *tab)
 {
-    if (strcmp(tab[0], "cd") == 0 ||
-        strcmp(tab[0], "echo") == 0 ||
-        strcmp(tab[0], "export") == 0 ||
-        strcmp(tab[0], "unset") == 0 ||
-        strcmp(tab[0], "env") == 0 ||
-        strcmp(tab[0], "exit") == 0 ||
-        strcmp(tab[0], "ls") == 0 ||
-        strcmp(tab[0], "cat") == 0)
+    int i = 0;
+    if(!tab)
     {
-        return 1;
+        printf("Error: Invalid input (tab is NULL)\n");
+        return (1);
     }
-    return 0;
+    if(ft_strcmp(tab, "|") == 0 || ft_strcmp(tab, "<") == 0 || ft_strcmp(tab, ">") == 0 ||
+       ft_strcmp(tab, "<<") == 0 || ft_strcmp(tab, ">>") == 0)
+    {
+        printf("Syntax error near unexpected token `%s'\n", tab);
+        return (1);
+    }
+    return (0);
 }
 
 int invalid_pipe_position(char **tab)
@@ -46,7 +49,6 @@ int invalid_pipe_position(char **tab)
         printf("Syntax error near unexpected token `|'\n");
         return (1);
     }
-
     while (tab[i])
     {
         // Check if the current token is a pipe
@@ -71,9 +73,9 @@ int No_target_red(t_data *data)
     i = 0;
     while (data->tab[i])
     {
-        if (strcmp(data->tab[i], "<") == 0 || strcmp(data->tab[i], ">") == 0) // ??
+        if (ft_strcmp(data->tab[i], "<") == 0 || ft_strcmp(data->tab[i], ">") == 0) // ??
         {
-            if (data->tab[i + 1] == NULL || strcmp(data->tab[i + 1], "|") == 0) // ls > | wc
+            if (data->tab[i + 1] == NULL || ft_strcmp(data->tab[i + 1], "|") == 0) // ls > | wc
             {
                 printf("Syntax error near unexpected token `newline'\n");
                 return (1);
@@ -121,30 +123,77 @@ int invalid_token(t_data *data)
     return (0);
 }
 
-
-int syntax_error(t_data *data)
+int check_cd(char **tab)
 {
-    if (!data || !data->tab) // Check if data or data->tab is NULL
+    int i = 0;
+
+    while (tab[i])
+    {
+        if (i == 1 && check_sepicail_operators(tab[i]) && is_directory(tab[1]))
+        {
+            printf("cd: invalid option: %s\n", tab[i]);
+            return (1);
+        }
+        i++;
+    }
+    return (0);
+}
+
+int parsing(t_data *data)
+{
+    // Validate input
+    if (!data || !data->tab)
     {
         printf("Error: Invalid input data\n");
         return (1);
     }
-    int i = 0;
-    if(invalid_pipe_position(data->tab) == 1)
+    // Check if the command is valid
+    if (detect_cmd(data->tab) == 0)
     {
-        printf("Invalid pipe position\n");
+        printf("Command not found\n");
         return (1);
     }
-    if (No_target_red(data) == 1)
+    // Check for syntax errors in pipes, redirections, and tokens
+    if (invalid_pipe_position(data->tab) || No_target_red(data) || invalid_token(data))
     {
-        printf("No target redirection\n");
+        return (1); // Error messages are already printed in these functions
+    }
+    // Handle specific commands with additional syntax checks
+    if (ft_strcmp(data->tab[0], "cd") == 0 && check_cd(data->tab))
+    {
+        printf("Invalid cd command\n");
         return (1);
     }
-    if (invalid_token(data) == 1)
-    {
-        printf("Invalid token\n");
-        return (1);
-    }
-    printf("Valid Syntax\n");
+    // else if (ft_strcmp(data->tab[0], "echo") == 0)
+    // {
+    //     // Add specific checks for `echo` if needed
+    //     return (0); // No specific syntax error for `echo`
+    // }
+    // else if (ft_strcmp(data->tab[0], "export") == 0)
+    // {
+    //     // Add specific checks for `export` if needed
+    //     return (0); // No specific syntax error for `export`
+    // }
+    // else if (ft_strcmp(data->tab[0], "unset") == 0)
+    // {
+    //     // Add specific checks for `unset` if needed
+    //     return (0); // No specific syntax error for `unset`
+    // }
+    // else if (ft_strcmp(data->tab[0], "env") == 0)
+    // {
+    //     // Add specific checks for `env` if needed
+    //     return (0); // No specific syntax error for `env`
+    // }
+    // else if (ft_strcmp(data->tab[0], "exit") == 0)
+    // {
+    //     // Add specific checks for `exit` if needed
+    //     return (0); // No specific syntax error for `exit`
+    // }
+    // else if (ft_strcmp(data->tab[0], "cat") == 0)
+    // {
+    //     // Add specific checks for `cat` if needed
+    //     return (0); // No specific syntax error for `cat`
+    // }
+    // printf("Valid Syntax\n");
     return (0);
 }

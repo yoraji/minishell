@@ -6,41 +6,39 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 03:02:53 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/22 05:19:27 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/26 08:44:05 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int     is_builtin(char *cmd)
-{
-    // Check if the command is a built-in command
-    if (strcmp(cmd, "cd") == 0 || strcmp(cmd, "echo") == 0 ||
-        strcmp(cmd, "export") == 0 || strcmp(cmd, "unset") == 0 ||
-        strcmp(cmd, "env") == 0 || strcmp(cmd, "exit") == 0)
-    {
-        return 1; // Built-in command
+int is_directory(char *path) {
+    struct stat path_stat;
+    if (stat(path, &path_stat) != 0) {
+        printf("path is not exist\n");
+        return 0;
     }
-    return 0; // Not a built-in command
+    return 1;
 }
 
-// int     execute_builtin(t_cmd *cmd)
+
+// int     execute_builtin(t_data *data)
 // {
-//     if (strcmp(cmd->cmd, "cd") == 0)
-//         return builtin_cd(cmd->args);
-//     else if (strcmp(cmd->cmd, "echo") == 0)
-//         return builtin_echo(cmd->args);
-//     else if (strcmp(cmd->cmd, "pwd") == 0)
-//         return builtin_pwd();
-//     else if (strcmp(cmd->cmd, "env") == 0)
-//         return builtin_env(cmd->envp);
-//     else if (strcmp(cmd->cmd, "export") == 0)
-//         return builtin_export(cmd->args, cmd->envp);
-//     else if (strcmp(cmd->cmd, "unset") == 0)
-//         return builtin_unset(cmd->args, cmd->envp);
-//     else if (strcmp(cmd->cmd, "exit") == 0)
-//         return builtin_exit(cmd->args);
-//     return -1; // Not a built-in command
+    // if (strcmp(data->tab, "cd") == 0)
+    //     return builtin_cd(cmd->args);
+    // else if (strcmp(data->tab, "echo") == 0)
+    //     return builtin_echo(cmd->args);
+    // else if (strcmp(data->tab, "pwd") == 0)
+    //     return builtin_pwd();
+    // else if (strcmp(data->tab, "env") == 0)
+    //     return builtin_env(cmd->envp);
+    // else if (strcmp(data->tab, "export") == 0)
+    //     return builtin_export(cmd->args, cmd->envp);
+    // else if (strcmp(data->tab, "unset") == 0)
+    //     return builtin_unset(cmd->args, cmd->envp);
+    // else if (strcmp(data->tab, "exit") == 0)
+    //     return builtin_exit(cmd->args);
+    // return -1; // Not a built-in command
 // }
 
 int     builtin_cd(char **args)
@@ -65,7 +63,7 @@ int     builtin_echo(char **args)
     int i = 1;
     int newline = 1;
 
-    if (args[1] && strcmp(args[1], "-n") == 0)
+    if (args[1] && ft_strcmp(args[1], "-n") == 0)
     {
         newline = 0;
         i++;
@@ -74,7 +72,7 @@ int     builtin_echo(char **args)
     {
         if (newline == 1 && args[0][i])
         printf("%s", args[i]);
-        if (args[i + 1]) // ?? 
+        if (args[i + 1]) // ??
             printf(" ");
         if (newline == 1 && args[0][i + 1] == '\0')
             printf("\n");
@@ -101,18 +99,16 @@ int     builtin_pwd(void)
 
 int detect_cmd(char **tab)
 {
-    int i = 0;
     if (tab)
     {
         // ?? !!
-        if (strcmp(tab[i], "cd") == 0 || strcmp(tab[i], "echo") == 0 ||
-            strcmp(tab[i], "export") == 0 || strcmp(tab[i], "unset") == 0 ||
-            strcmp(tab[i], "env") == 0 || strcmp(tab[i], "ls") == 0 ||
-            strcmp(tab[i], "cat") == 0 || strcmp(tab[i], "exit") == 0)
+        if (ft_strcmp(tab[0], "cd") == 0 || ft_strcmp(tab[0], "echo") == 0 ||
+            ft_strcmp(tab[0], "export") == 0 || ft_strcmp(tab[0], "unset") == 0 ||
+            ft_strcmp(tab[0], "env") == 0 || ft_strcmp(tab[0], "ls") == 0 ||
+            ft_strcmp(tab[0], "cat") == 0 || ft_strcmp(tab[0], "exit") == 0)
         {
             return 1;
         }
-        i++;
     }
     return 0;
 }

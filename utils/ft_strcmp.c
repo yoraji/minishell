@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prints.c                                           :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 05:29:49 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 09:07:59 by yoraji           ###   ########.fr       */
+/*   Created: 2025/04/24 22:35:00 by yoraji            #+#    #+#             */
+/*   Updated: 2025/04/24 22:35:19 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/minishell.h"
 
-void    print_tokens(char **tokens)
+int ft_strcmp(char *s1, char *s2)
 {
-    int i = 0;
-    while (tokens[i])
-    {
-        printf("Token: [%s]\n", tokens[i]);
-        i++;
-    }
+	int i = 0;
+
+	while((s1[i] == s2[i]) && s1[i] && s2[i])
+		i++;
+	return (s1[i]-s2[i]);
 }

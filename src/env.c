@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 04:55:50 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/24 08:13:54 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/24 09:43:02 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ char **expand_env(char **input, char **envp)
         int j = 0;
         while (token[j])
         {
-            // if (token[j] == '\\' && token[j + 1] == '$')
-            // {
-            //     char *tmp = ft_strjoin(new_token, "$");
-            //     free(new_token);
-            //     new_token = tmp;
-            //     j += 2; // Skip the backslash and the $
-            // }
+            if (token[j] == '\\' && token[j + 1] == '$')
+            {
+                char *tmp = ft_strjoin(new_token, "$");
+                free(new_token);
+                new_token = tmp;
+                j += 2; // Skip the backslash and the $
+            }
             if (token[j] == '$' && token[j + 1] && token[j + 1] != ' ')
             {
                 j++;
