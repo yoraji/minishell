@@ -6,7 +6,7 @@
 /*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 23:41:09 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/28 06:48:46 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/04/28 11:01:25 by yoraji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ ASTNode *build_node(char **tokens)
             ASTNode *pipe_node = create_node(NODE_PIPE, NULL, NULL);
             if (!pipe_node)
                 return NULL;
-
             pipe_node->left = last_cmd;
-
             if (!root || root->type != NODE_PIPE)
                 root = pipe_node;
             else

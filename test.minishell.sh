@@ -34,6 +34,7 @@ Cases_tests (echo):
     echo "hello; world" | grep "hello" && echo "found" || echo "not found"
     echo "a"'b'
     echo "hello 'nested "quotes"'"
+    echo -nnnn -nnnnn -nnndqn adfasf -nnnn
     >
     <
     >>

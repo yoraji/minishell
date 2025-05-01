@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 //
+#include <errno.h>
+//
 
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
 #include <sys/stat.h>
-
-//
 #include <readline/readline.h>
 #include <readline/history.h>
 
