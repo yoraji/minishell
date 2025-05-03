@@ -1,39 +1,54 @@
-CC = cc
-
-C_FLAGS = 	  # -I./include
-
 NAME = minishell
 
-OBJ = $(SRC:.c=.o)
+CC = gcc
+# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = 
+RM = rm -f
 
-SRC = 	./src/minishell.c \
-		./src/signals.c \
-		./src/build_in.c \
-		./src/parsing_engine.c \
-		./src/Constrating_AST.c \
-		./src/free.c \
-		./src/env.c \
-		./src/prints.c \
-		./src/syntax_error.c \
-		./utils/ft_strcmp.c \
-		./utils/ft_split.c \
-		./utils/ft_strjoin.c \
-		./utils/ft_atoi.c \
-		./utils/ft_strlen.c \
-		./utils/ft_strdup.c \
-		./utils/ft_memcpy.c \
-		./utils/ft_isspace.c \
+# Manually listed source files
+SRCS = \
+	src/minishell.c \
+	src/signals.c \
+	src/parsing_engine.c \
+	src/Constrating_AST.c \
+	src/free.c \
+	src/env.c \
+	src/prints.c \
+	src/syntax_error.c \
+	utils/ft_atoi.c \
+	utils/ft_isspace.c \
+	utils/ft_memcpy.c \
+	utils/ft_split.c \
+	utils/ft_strchr.c \
+	utils/ft_strcmp.c \
+	utils/ft_strdup.c \
+	utils/ft_strjoin.c \
+	utils/ft_strlen.c \
+	build-in/build-in.c \
+	build-in/cd.c \
+	build-in/echo.c \
+	build-in/env.c \
+	build-in/export.c \
+	build-in/pwd.c \
+	build-in/unset.c
 
-all : $(NAME)
+OBJS = $(SRCS:.c=.o)
+INCLUDES = -Iincludes
 
-$(NAME) : $(SRC)
-		$(CC) $(C_FLAGS) -o $(NAME) $(SRC) -lreadline
-fclean : clean
-		rm -f $(NAME)
-clean :
-		rm -f $(OBJ)
-		rm -f $(OBJ_BONUS)
+all: $(NAME)
 
-re : fclean all
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ -lreadline
 
-.PHONY : all clean fclean re
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	$(RM) $(OBJS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

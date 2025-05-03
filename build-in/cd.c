@@ -13,18 +13,19 @@
 #include "../includes/minishell.h"
 
 
-int is_directory(const char *path) {
+int is_directory(char *path)
+{
     struct stat path_stat;
     if (stat(path, &path_stat) != 0) {
         perror("cd");
         return 0;
     }
     if (!S_ISDIR(path_stat.st_mode)) {
-        fprintf(stderr, "cd: %s: Not a directory\n", path);
+        printf("cd: %s: Not a directory\n", path);
         return 0;
     }
     if (access(path, X_OK) != 0) {
-        fprintf(stderr, "cd: %s: Permission denied\n", path);
+        printf("cd: %s: Permission denied\n", path);
         return 0;
     }
     return 1;
@@ -39,7 +40,15 @@ char *get_env_value(const char *name) {
     return strdup(value);
 }
 
-int builtin_cd(ASTNode *node) {
+char *set_env_value(const char *name, const char *value) {
+    if (setenv(name, value, 1) != 0) {
+        perror("setenv");
+        return NULL;
+    }
+    return strdup(value);
+}
+
+int builtin_cd(ASTNode *node){
     char *path;
     char cwd[1024];
     char *oldpwd;
@@ -80,7 +89,6 @@ int builtin_cd(ASTNode *node) {
     if (oldpwd)
         set_env_value("OLDPWD", oldpwd);
     set_env_value("PWD", cwd);
-
     return 0;
 }
 

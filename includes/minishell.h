@@ -87,7 +87,7 @@ void sigquit_handler(int signum);
 void sig_handler(int signum);
 
 /* build-in function */
-int builtin_cd(char **args);
+int builtin_cd(ASTNode *node);
 int builtin_echo(char **args);
 int builtin_pwd(void);
 int is_directory(char *path);
