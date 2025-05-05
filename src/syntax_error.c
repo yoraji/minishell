@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
+/*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:21:09 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/27 06:39:56 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/05/05 09:00:41 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,18 +125,22 @@ int invalid_token(t_data *data)
 
 int check_cd(char **tab)
 {
-    int i = 0;
+    if (!tab || !tab[0]) // Ensure the input is valid
+        return (1);
 
-    while (tab[i])
+    if (tab[1] && tab[2]) // Check if there are too many arguments
     {
-        if (i == 1 && check_sepicail_operators(tab[i]) && is_directory(tab[1]))
-        {
-            printf("cd: invalid option: %s\n", tab[i]);
-            return (1);
-        }
-        i++;
+        printf("cd: too many arguments\n");
+        return (1);
     }
-    return (0);
+
+    if (tab[1] && !is_directory(tab[1])) // Check if the argument is a valid directory
+    {
+        printf("cd: %s: No such file or directory\n", tab[1]);
+        return (1);
+    }
+
+    return (0); // No errors
 }
 
 int parsing(t_data *data)

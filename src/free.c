@@ -29,17 +29,17 @@ void free_tab(char **tab)
     tab = NULL; // Set the pointer to NULL after freeing
 }
 
-void   free_data(t_data *data)
-{
-    // Function to free allocated memory in data
-    if (data->envp)
-        free(data->envp);
-    if (data->cmds)
-        free(data->cmds);
-    if (data->pipes)
-        free(data->pipes);
-    if (data->redirs)
-        free(data->redirs);
-    if (data->hdocs)
-        free(data->hdocs);
-}
+// void   free_data(t_data *data)
+// {
+//     // Function to free allocated memory in data
+//     if (data->envp)
+//         free(data->envp);
+//     if (data->cmds)
+//         free(data->cmds);
+//     if (data->pipes)
+//         free(data->pipes);
+//     if (data->redirs)
+//         free(data->redirs);
+//     if (data->hdocs)
+//         free(data->hdocs);
+// }

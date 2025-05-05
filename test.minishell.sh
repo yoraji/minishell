@@ -6,6 +6,11 @@
 
 Cases_tests (echo):
 /*
+    $? → last exit status.
+    $$ → process ID (optional in minishell).
+    $VAR where VAR isn’t defined → empty string.
+    $VAR → should NOT expand (single quotes prevent expansion).
+    "${VAR}" → optional support for braces.
     echo "'hello'  welcome whats up""'"
     echo "hello"
     echo "hello world

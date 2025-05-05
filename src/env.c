@@ -17,15 +17,6 @@
 // 3.Look it up using getenv().
 // 4.Replace $VAR with its value.
 
-/*
-    $? → last exit status.
-    $$ → process ID (optional in minishell).
-    $VAR where VAR isn’t defined → empty string.
-    '$VAR' → should NOT expand (single quotes prevent expansion).
-    "${VAR}" → optional support for braces.
-
-*/
-
 int is_expand_env(char **input)
 {
     int i = 0;

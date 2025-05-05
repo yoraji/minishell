@@ -3,16 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_engine.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoraji <yoraji@student.42.fr>              +#+  +:+       +#+        */
+/*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 09:10:28 by yoraji            #+#    #+#             */
-/*   Updated: 2025/04/27 06:45:25 by yoraji           ###   ########.fr       */
+/*   Updated: 2025/05/05 10:43:21 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 
+
+t_token *create_token(char *token)
+{
+    t_token *new_token = malloc(sizeof(t_token));
+    if (!new_token)
+        return NULL;
+    new_token->token = token;
+    new_token->next = NULL;
+    return new_token;
+}
 
 int unclosed_quotes(char **tab)
 {
@@ -47,89 +57,15 @@ int unclosed_quotes(char **tab)
     return 0;
 }
 
-// OLD VERSION THAT HAVE PROBLEM IN SPACES
-// char *extract_token(char *input, int *i)
-// {
-//     char *result = calloc(1, sizeof(char)); // ??
-//     if (!result)
-//         return NULL;
-//     while (input[*i] && ft_isspace(input[*i])) // Skip whitespace
-//         (*i)++;
-
-//     while (input[*i] && !ft_isspace(input[*i])) // ??
-//     {
-//         char quote = 0;
-
-//         // Handle quotes
-//         if (input[*i] == '\'' || input[*i] == '"')
-//         {
-//             quote = input[(*i)];
-//             (*i)++; // ??
-//             (*i)++; // ??
-//             int qstart = *i;
-//             while (input[*i] && input[*i] != quote) // Skip until closing quote
-//                 (*i)++;
-//             int len = *i - qstart + 1; // Include closing quote
-//             char *seg = strndup(input + qstart, len);
-//             if (!seg)
-//             {
-//                 free(result);
-//                 return NULL;
-//             }
-//             char *tmp = ft_strjoin(result, seg);
-//             free(result);
-//             result = tmp;
-//             free(seg);
-//             if (input[*i] == quote)
-//                 (*i)++;
-//         }
-//         // Handle escape characters
-//         else if (input[*i] == '\\')
-//         {
-//             (*i)++; // Skip the backslash
-//             if (input[*i]) // Ensure there is a character after the backslash
-//             {
-//                 char escaped[2] = {input[*i], '\0'};
-//                 char *tmp = ft_strjoin(result, escaped);
-//                 free(result);
-//                 result = tmp;
-//                 (*i)++;
-//             }
-//         }
-//         else
-//         {
-//             // Handle regular characters
-//             int wstart = *i;
-//             while (input[*i] && !ft_isspace(input[*i]) && input[*i] != '\'' && input[*i] != '"' && input[*i] != '\\')
-//                 (*i)++;
-//             int len = *i - wstart;
-//             char *segment = strndup(input + wstart, len);
-//             if (!segment)
-//             {
-//                 free(result);
-//                 return NULL;
-//             }
-
-//             char *tmp = ft_strjoin(result, segment);
-//             free(result);
-//             result = tmp;
-//             free(segment);
-//         }
-//     }
-//     return result;
-// }
-
-
 // sugestion
 char *extract_token(char *input, int *i)
 {
+    char *tmp = NULL;
     char *result = calloc(1, sizeof(char));
     if (!result)
         return NULL;
-
     while (input[*i] && ft_isspace(input[*i])) // Skip whitespace
         (*i)++;
-
     while (input[*i] && !ft_isspace(input[*i]))
     {
         char quote = 0;
@@ -138,13 +74,13 @@ char *extract_token(char *input, int *i)
         if (input[*i] == '\'' || input[*i] == '"')
         {
             quote = input[*i];
-            char *tmp = ft_strjoin(result, (char[]){quote, '\0'}); // Include the opening quote
+            tmp = ft_strjoin(result, (char[]){quote, '\0'});
             free(result);
             result = tmp;
             (*i)++;
             while (input[*i] && input[*i] != quote)
             {
-                if (input[*i] == '\\') // Handle escaped quotes
+                if (input[*i] == '\\')
                     (*i)++;
                 tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
                 free(result);
@@ -165,13 +101,12 @@ char *extract_token(char *input, int *i)
                 return NULL;
             }
         }
-        // Handle escape characters
         else if (input[*i] == '\\')
         {
             (*i)++;
-            if (input[*i]) // Ensure there is a character after the backslash
+            if (input[*i])
             {
-                char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+                tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
                 free(result);
                 result = tmp;
                 (*i)++;
@@ -180,7 +115,7 @@ char *extract_token(char *input, int *i)
         else if (input[*i] == '|' || input[*i] == '<' || input[*i] == '>')
         {
 
-            char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+            tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
             free(result);
             result = tmp;
             (*i)++;
@@ -188,8 +123,7 @@ char *extract_token(char *input, int *i)
         }
         else
         {
-            // Handle other characters
-            char *tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
+            tmp = ft_strjoin(result, (char[]){input[*i], '\0'});
             free(result);
             result = tmp;
             (*i)++;
@@ -201,22 +135,52 @@ char *extract_token(char *input, int *i)
 
 char **tokens(char *input)
 {
-    char **tokens = malloc(sizeof(char *) * 128);
-    if (!tokens) return NULL;
+    t_token *token = NULL;
+    t_token *head = NULL;
+    t_token *current = NULL; // Pointer to traverse the linked list
     int count = 0;
     int i = 0, t = 0;
+
     while (input[i])
     {
         while (input[i] && ft_isspace(input[i]))
             i++;
         if (!input[i])
             break;
-        char *token = extract_token(input, &i);
-        if (!token)
+        char *token_str = extract_token(input, &i);
+        if (!token_str)
             return NULL;
-        tokens[t++] = token;
+        if (!head)
+        {
+            head = create_token(token_str);
+            current = head;
+        }
+        else
+        {
+            t_token *new_token = create_token(token_str);
+            if (!new_token)
+                return NULL;
+            current->next = new_token;
+            current = new_token;
+        }
+        count++;
+    }
+
+    char **tokens = malloc(sizeof(char *) * (count + 1));
+    if (!tokens)
+        return NULL;
+
+    current = head;
+    while (current)
+    {
+        tokens[t] = current->token;
+        t++;
+        t_token *temp = current;
+        current = current->next;
+        free(temp); // Free the linked list node
     }
     tokens[t] = NULL;
+
     return tokens;
 }
 
@@ -359,42 +323,40 @@ int handling_input(char *argv, t_data *data)
         perror("Memory allocation failed"); // ??
         return (1);
     }
-    // print_tokens(tab);
-    // // printf("after tokens\n");
-    // return 0;
-    // if (is_expand_env(tab) == 1)
-    //     tab = expand_env(tab, data->envp);
-    // if (ft_scan(tab) == 1)
-    // {
-    //     tab = scan_token(tab); // protections ??
-    //     if (tab == NULL) // protection against memory allocation failure
-    //     {
-    //         perror("Memory allocation failed");
-    //         return (1);
-    //     }
+    print_tokens(tab);
+    printf("after tokens\n");
+    if (is_expand_env(tab) == 1)
+        tab = expand_env(tab, data->envp);
+    if (ft_scan(tab) == 1)
+    {
+        tab = scan_token(tab); // protections ??
+        if (tab == NULL) // protection against memory allocation failure
+        {
+            perror("Memory allocation failed");
+            return (1);
+        }
 
-    //  }
-     // printf("after tokens\n");
+    }
+    printf("after tokens\n");
     // return 0;
-    // printf("after scan_token\n");
     // print_tokens(tab);
     detect_sepical_token(tab, data);
     // here add the functions to check the token
-    // if (unclosed_quotes(tab) || brain(tab))
-    // {
-    //     free_tab(tab); // Use free_tab to free memory
-    //     return (1);
-    // }
+    if (unclosed_quotes(tab) || brain(tab))
+    {
+        free_tab(tab); // Use free_tab to free memory
+        return (1);
+    }
+
     // Future: check redirections, build cmd structs here...
     // free_tab(tab); // Free the tokenized array
-
     // Future: check redirections, build cmd structs here...
 
-    while (tab[i])
-    {
-        printf("Token: [%s]\n", tab[i]);
-        i++;
-    }
+    // while (tab[i])
+    // {
+    //     printf("Token: [%s]\n", tab[i]);
+    //     i++;
+    // }
 
     data->tab = tab; // Store the tokenized array in data
     // free_tab(tab); // Free the tokenized array

@@ -58,11 +58,6 @@ ASTNode *build_node(char **tokens)
     {
         if (strcmp(tokens[i], "|") == 0)
         {
-            // if (!last_cmd)
-            // {
-            //     printf("Syntax error: Pipe without preceding command\n");
-            //     return NULL;
-            // }
             ASTNode *pipe_node = create_node(NODE_PIPE, NULL, NULL);
             if (!pipe_node)
                 return NULL;
@@ -77,18 +72,6 @@ ASTNode *build_node(char **tokens)
         }
         else if (is_redirection(tokens[i]))
         {
-            // if (!tokens[i + 1])
-            // {
-            //     printf("Syntax error: Missing file for redirection\n");
-            //     return NULL;
-            // }
-
-            // if (!last_cmd)
-            // {
-            //     printf("Syntax error: Redirection without a command\n");
-            //     return NULL;
-            // }
-
             ASTNode *redir_node = create_node(NODE_REDIRECTION, NULL, tokens[i + 1]);
             if (!redir_node)
                 return NULL;
@@ -113,7 +96,6 @@ ASTNode *build_node(char **tokens)
                 perror("Memory allocation failed");
                 return NULL;
             }
-
             int arg_index = 0;
             while (tokens[i] && strcmp(tokens[i], "|") != 0 && !is_redirection(tokens[i]))
                 args[arg_index++] = strdup(tokens[i++]);
@@ -139,11 +121,9 @@ void print_ast(ASTNode *node, int depth)
 {
     if (!node)
         return;
-
     // Proper indentation
     for (int i = 0; i < depth; i++)
         printf("  ");
-
     // Print the current node type
     if (node->type == NODE_COMMAND)
     {

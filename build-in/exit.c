@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 08:50:44 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/05 08:52:22 by youssef          ###   ########.fr       */
+/*   Created: 2025/05/05 08:35:49 by youssef           #+#    #+#             */
+/*   Updated: 2025/05/05 08:58:20 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// header 
 #include "../includes/minishell.h"
 
-int builtin_env(char **envp)
+
+int builtin_exit(char **args)
 {
-    if (!envp)
-        return -1;
-    for (int i = 0; envp[i]; i++)
-        printf("%s\n", envp[i]);
-    return 0;
+    int status = 0;
+
+    if (args[1])
+    {
+        if (args[2])
+        {
+            fprintf(stderr, "exit: too many arguments\n");
+            return 1;
+        }
+        status = ft_atoi(args[1]);
+    }
+
+    printf("exit\n");
+    exit(status);
 }

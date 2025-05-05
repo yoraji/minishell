@@ -1,3 +1,6 @@
+#ifndef MINISHELL_H
+#define MINISHELL_H
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,17 +32,22 @@ typedef struct ASTNode {
     struct ASTNode *right;
 } ASTNode;
 
-//
-typedef struct s_pipe
+typedef struct t_token
 {
-    int fd[2];
-} t_pipe;
+    char *token;
+    struct t_token *next;
+} t_token;
 
-typedef struct s_redir
-{
-    char *file;
-    int type; // 0 for input, 1 for output
-} t_redir;
+// typedef struct s_pipe
+// {
+//     int fd[2];
+// } t_pipe;
+
+// typedef struct s_redir
+// {
+//     char *file;
+//     int type;
+// } t_redir;
 
 
 typedef struct s_data
@@ -49,9 +57,9 @@ typedef struct s_data
     // int exit_status;
     char *cmds;
     int cmd_count;
-    t_pipe *pipes;
+    // t_pipe *pipes;   
     int pipe_count;
-    t_redir *redirs;
+    // t_redir *redirs;
     int redir_count_left;
     int redir_count_right;
     int double_redir_count_left;
@@ -87,28 +95,26 @@ void sigquit_handler(int signum);
 void sig_handler(int signum);
 
 /* build-in function */
+int execute_builtin(ASTNode *node, t_data *data);
 int builtin_cd(ASTNode *node);
+int is_directory(char *path);
 int builtin_echo(char **args);
 int builtin_pwd(void);
-int is_directory(char *path);
-int execute_builtin(t_data *data);
+int builtin_unset(char **args, char **envp);
+int builtin_env(char **envp);
+int builtin_export(char **args, char **envp);
+int is_builtin(char *cmd);
+int detect_cmd(char **tab); // Keep only one declaration
 
-
-// int builtin_env(char **envp);
-// int builtin_export(char **args, char **envp);
-// int builtin_unset(char **args, char **envp);
-// int builtin_exit(char **args);
-// int is_builtin(char *cmd);
 int detect_cmd(char **tab);
 
-/* enviroment */
-int is_expand_env(char **input);
+int is_expand_env(char **input); // Keep only one declaration
+char **expand_env(char **input, char **envp);
 
 int builtin_env(char **envp);
 int builtin_export(char **args, char **envp);
 int builtin_unset(char **args, char **envp);
 int builtin_exit(char **args);
-int is_builtin(char *cmd);
 int detect_cmd(char **tab);
 
 /* Constrating_AST.c */
@@ -151,3 +157,5 @@ void    print_tokens(char **tokens);
 // Dangling operators : &&, ||, ;, &, |
 // Redirect without target: cat <, ls >
 // Invalid redirection: ls > <, ls < >
+
+#endif
