@@ -101,7 +101,8 @@ int is_directory(char *path);
 int builtin_echo(char **args);
 int builtin_pwd(void);
 int builtin_unset(char **args, char **envp);
-int builtin_env(char **envp);
+// int builtin_env(char void execute_pipeline(ASTNode *node,t_data *data)
+// **envp);
 int builtin_export(char **args, char **envp);
 int is_builtin(char *cmd);
 int detect_cmd(char **tab); // Keep only one declaration
@@ -157,5 +158,5 @@ void    print_tokens(char **tokens);
 // Dangling operators : &&, ||, ;, &, |
 // Redirect without target: cat <, ls >
 // Invalid redirection: ls > <, ls < >
-
+         
 #endif

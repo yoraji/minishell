@@ -5,7 +5,7 @@
 // echo " ' hello'  welcome whats up " " ' " '
 
 Cases_tests (echo):
-/*
+/* 
     $? → last exit status.
     $$ → process ID (optional in minishell).
     $VAR where VAR isn’t defined → empty string.

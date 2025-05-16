@@ -32,6 +32,8 @@ SRCS = \
 	build-in/pwd.c \
 	build-in/unset.c \
 	build-in/exit.c \
+	build-in/pipe.c \
+
 
 OBJS = $(SRCS:.c=.o)
 INCLUDES = -Iincludes

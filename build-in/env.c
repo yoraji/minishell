@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 08:50:44 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/05 08:52:22 by youssef          ###   ########.fr       */
+/*   Updated: 2025/05/08 09:56:22 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ int builtin_env(char **envp)
 {
     if (!envp)
         return -1;
-    for (int i = 0; envp[i]; i++)
+    int i=0;
+    while(envp[i])
+    {
         printf("%s\n", envp[i]);
-    return 0;
+        i++;
+    }
+   return 0;
 }

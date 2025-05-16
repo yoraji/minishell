@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 03:02:53 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/05 13:01:31 by youssef          ###   ########.fr       */
+/*   Updated: 2025/05/08 11:46:56 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,33 @@ int is_builtin(char *cmd)
 
 int execute_builtin(ASTNode *node, t_data *data)
 {
-    if (strcmp(data->tab[0], "cd") == 0)
-        return builtin_cd(node);
-    else if (strcmp(data->tab[0], "echo") == 0)
-        return builtin_echo(node->args);
-    else if (strcmp(data->tab[0], "pwd") == 0)
-        return builtin_pwd();
-    else if (strcmp(data->tab[0], "env") == 0)
-        return builtin_env(data->envp);
-    else if (strcmp(data->tab[0], "export") == 0)
-        return builtin_export(node->args, data->envp);
-    else if (strcmp(data->tab[0], "unset") == 0)
-        return builtin_unset(node->args, data->envp);
-    else if (strcmp(data->tab[0], "exit") == 0)
-        return builtin_exit(node->args);
-    return -1; // Not a built-in command
-}
+    if (!node || !node->args || !node->args[0])
+        return -1;
 
+    // Check if the command is a built-in
+    if (is_builtin(node->args[0]))
+    {
+        if (strcmp(node->args[0], "cd") == 0)
+            return builtin_cd(node);
+        else if (strcmp(node->args[0], "echo") == 0)
+            return builtin_echo(node->args);
+        else if (strcmp(node->args[0], "pwd") == 0)
+            return builtin_pwd();
+        else if (strcmp(node->args[0], "env") == 0)
+            return builtin_env(data->envp);
+        else if (strcmp(node->args[0], "export") == 0)
+            return builtin_export(node->args, data->envp);
+        else if (strcmp(node->args[0], "unset") == 0)
+            return builtin_unset(node->args, data->envp);
+        else if (strcmp(node->args[0], "exit") == 0)
+            return builtin_exit(node->args);
+    }
+
+    // If not a built-in, execute as an external command
+    execvp(node->args[0], node->args); // Execute the external command
+    perror("execvp"); // If execvp fails
+    return -1;
+}
 
 int detect_cmd(char **tab)
 {
