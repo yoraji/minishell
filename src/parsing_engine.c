@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 09:10:28 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/05 10:59:24 by youssef          ###   ########.fr       */
+/*   Updated: 2025/09/01 05:25:24 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,7 @@ int handling_input(char *argv, t_data *data)
         return (1);
     }
     print_tokens(tab);
-    printf("after tokens\n");
+    // printf("after tokens\n");
     if (is_expand_env(tab) == 1)
         tab = expand_env(tab, data->envp);
     if (ft_scan(tab) == 1)
@@ -337,7 +337,7 @@ int handling_input(char *argv, t_data *data)
         }
 
     }
-    printf("after tokens\n");
+    // printf("after tokens\n");
     // return 0;
     // print_tokens(tab);
     detect_sepical_token(tab, data);

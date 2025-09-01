@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 08:50:53 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/05 12:53:29 by youssef          ###   ########.fr       */
+/*   Updated: 2025/09/01 05:29:07 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int is_directory(char *path)
 {
-    struct stat path_stat;
+    struct stat path_stat; // 
     if (stat(path, &path_stat) != 0) {
         perror("cd");
         return 0;
@@ -53,7 +53,6 @@ int builtin_cd(ASTNode *node) {
     char cwd[1024];
     char *oldpwd;
 
-    printf("Executing cd command\n");
     if (!node || node->type != NODE_COMMAND || !node->args) {
         fprintf(stderr, "cd: missing argument\n");
         return -1;
@@ -71,7 +70,7 @@ int builtin_cd(ASTNode *node) {
             fprintf(stderr, "cd: OLDPWD not set\n");
             return -1;
         }
-        printf("%s\n", path); // Print the new directory
+        printf("%s\n", path); 
     } else if (ft_strcmp(node->args[1], "~") == 0 || ft_strcmp(node->args[1], "$HOME") == 0) {
         path = get_env_value("HOME");
         if (!path) {

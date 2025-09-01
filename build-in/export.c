@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 08:50:35 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/08 10:04:56 by youssef          ###   ########.fr       */
+/*   Updated: 2025/09/01 05:23:30 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int builtin_export(char **args, char **envp)
     int i = 1;
     while (args[i])
     {
-        char *key = strtok(args[i], "=");// ??
-        char *value = strtok(NULL, "="); // ??
-        
+        char *key = strtok(args[i], "=");
+        char *value = strtok(NULL, "=");
+
         if (key && value)
         {
             // Check if the key already exists in the environment

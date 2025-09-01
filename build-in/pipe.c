@@ -1,6 +1,5 @@
 #include "../includes/minishell.h"
 
-#include "../includes/minishell.h"
 
 void execute_pipeline(ASTNode *node, t_data *data)
 {

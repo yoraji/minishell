@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 08:35:49 by youssef           #+#    #+#             */
-/*   Updated: 2025/05/08 09:57:24 by youssef          ###   ########.fr       */
+/*   Updated: 2025/09/01 05:08:07 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int builtin_exit(char **args)
     {
         if (args[2])
         {
-            fprintf(stderr, "exit: too many arguments\n");
+            fprintf(stderr, "exit\n");
             return 1;
         }
         status = ft_atoi(args[1]);
