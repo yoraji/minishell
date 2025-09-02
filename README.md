@@ -2,6 +2,7 @@
 
 ![42 Project Badge](https://img.shields.io/badge/42-Project-blue)
 ![C Language Badge](https://img.shields.io/badge/Language-C-brightgreen)
+![42_Doc](https://harm-smits.github.io/42docs/projects/minishell)
 ![42 Academic License Badge](https://img.shields.io/badge/License-42_Academic-yellow)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
@@ -652,9 +653,9 @@ This project is developed as part of the **42 School curriculum**. It is intende
 
 **Youssef Oraji**
 - 42 School Student
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [@yoraji](https://github.com/yoraji)
 - Medium: [@rajiy8299](https://medium.com/@rajiy8299)
-- Email: your.email@example.com
+- Email: rajiy8299@gmail.com
 
 ### 🙏 Acknowledgments
 
@@ -692,15 +693,12 @@ This project has been improved through contributions from:
 
 ### 📬 Contact Information
 
-- **Project Repository**: [https://github.com/yourusername/minishell](https://github.com/yourusername/minishell)
-- **Issue Tracker**: [https://github.com/yourusername/minishell/issues](https://github.com/yourusername/minishell/issues)
-- **Discussions**: [https://github.com/yourusername/minishell/discussions](https://github.com/yourusername/minishell/discussions)
-
+- **Project Repository**: [https://github.com/yoraji/minishell](https://github.com/yoraji/minishell)
 ---
 
 <div align="center">
 
-**Made with ❤️ by [Youssef Oraji](https://github.com/yourusername)**
+**Made with ❤️ by [Youssef raji](https://github.com/yoraji)**
 
 *If this project helped you learn something new, please consider giving it a ⭐!*
 
