@@ -2,6 +2,7 @@
 
 ![42 Project Badge](https://img.shields.io/badge/42-Project-blue)
 ![C Language Badge](https://img.shields.io/badge/Language-C-brightgreen)
+![42_Doc](https://harm-smits.github.io/42docs/projects/minishell)
 ![42 Academic License Badge](https://img.shields.io/badge/License-42_Academic-yellow)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
