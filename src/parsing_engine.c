@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 09:10:28 by yoraji            #+#    #+#             */
-/*   Updated: 2025/09/01 05:25:24 by youssef          ###   ########.fr       */
+/*   Updated: 2025/09/02 04:04:19 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ int handling_input(char *argv, t_data *data)
         perror("Memory allocation failed"); // ??
         return (1);
     }
-    print_tokens(tab);
+    // print_tokens(tab);
     // printf("after tokens\n");
     if (is_expand_env(tab) == 1)
         tab = expand_env(tab, data->envp);

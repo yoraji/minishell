@@ -6,7 +6,7 @@
 /*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 03:02:53 by yoraji            #+#    #+#             */
-/*   Updated: 2025/05/08 11:46:56 by youssef          ###   ########.fr       */
+/*   Updated: 2025/09/02 04:02:16 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int detect_cmd(char **tab)
 {
     if (tab)
     {
-        // ?? !!
         if (ft_strcmp(tab[0], "cd") == 0 || ft_strcmp(tab[0], "echo") == 0 ||
             ft_strcmp(tab[0], "export") == 0 || ft_strcmp(tab[0], "unset") == 0 ||
             ft_strcmp(tab[0], "env") == 0 || ft_strcmp(tab[0], "ls") == 0 ||
