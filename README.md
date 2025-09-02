@@ -2,7 +2,6 @@
 
 ![42 Project Badge](https://img.shields.io/badge/42-Project-blue)
 ![C Language Badge](https://img.shields.io/badge/Language-C-brightgreen)
-![42_Doc](https://harm-smits.github.io/42docs/projects/minishell)
 ![42 Academic License Badge](https://img.shields.io/badge/License-42_Academic-yellow)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
@@ -553,6 +552,7 @@ gdb ./minishell
 
 - **[Medium Article](https://medium.com/@rajiy8299/minishell-projects-65b1213976d1)** - Comprehensive project guide
 - **[Bash Manual](https://www.gnu.org/software/bash/manual/)** - Official Bash documentation
+- **[42_Doc](https://harm-smits.github.io/42docs/projects/minishell)
 - **[Advanced Programming in UNIX Environment](https://www.amazon.com/Advanced-Programming-UNIX-Environment-3rd/dp/0321637739)** - System programming concepts
 - **[The Linux Programming Interface](https://man7.org/tlpi/)** - Comprehensive Linux system programming
 
